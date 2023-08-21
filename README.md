@@ -63,7 +63,7 @@ Get started with Streamlit
 Get started with Gradio
 
 # Contributing
-[LAWRENCE LARWEH](https://www.linkedin.com/in/lawrencelarweh/?originalSubdomain=gh)
+[HENOK SOLOMON](https://github.com/Henamen21/model_app/blob/master/www.linkedin.com/in/henok-solomon-a3b537206) 
 
 # Author
-[HENOK SOLOMON](https://github.com/Henamen21/model_app/blob/master/www.linkedin.com/in/henok-solomon-a3b537206)https://github.com/Henamen21/model_app/blob/master/www.linkedin.com/in/henok-solomon-a3b537206
+[LAWRENCE LARWEH](https://www.linkedin.com/in/lawrencelarweh/?originalSubdomain=gh)
