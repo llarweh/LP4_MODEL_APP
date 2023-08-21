@@ -1,101 +1,86 @@
-import gradio as gr
-import pickle
-import os
-import sklearn
+import streamlit as st
 import pandas as pd
- 
-title = "Vodafone Telecommunication : Customer Churn Prediction" 
-description = "Vodafone Telecommunication is a leading global telecommunications company.\
-                One of the challenges that Vodafone faces is customer churn, \
-                which is the loss of customers to other service providers. \
-                Customer churn can have a negative impact on the revenue \
-                and profitability of the company."
+import os
+import pickle 
+import numpy as np
 
-# Define the input components and their labels
-inputs = [              
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OrdinalEncoder, StandardScaler 
 
-    gr.inputs.Dropdown(["Male", "Female"], label="gender"),
-    gr.inputs.Dropdown(["Yes", "No"], label="SeniorCitizen"),
-    gr.inputs.Dropdown(["Yes", "No"], label="Partner"),   
-    gr.inputs.Dropdown(["Yes", "No"], label="Dependents"),
-    gr.inputs.Dropdown(["Yes", "No"],label="PhoneService"),
-    gr.inputs.Dropdown(["No phone service", "Yes", "No"], label="MultipleLines"),  
-    gr.inputs.Dropdown(["DSL", "Fiber optic", "No"], label="InternetService"),
-    gr.inputs.Dropdown(["No internet service", "Yes", "No"], label="OnlineSecurity"),
-    gr.inputs.Dropdown(["No internet service", "Yes", "No"], label="OnlineBackup"),
-    gr.inputs.Dropdown(["No internet service", "Yes", "No"], label="DeviceProtection"),
-    gr.inputs.Dropdown(["No internet service", "Yes", "No"], label="TechSupport"),
-    gr.inputs.Dropdown(["No internet service", "Yes", "No"], label="StreamingTV"),
-    gr.inputs.Dropdown(["No internet service", "Yes", "No"], label="StreamingMovies"),
-    gr.inputs.Radio(["Month-to-month", "One year", "Two year"], label="Contract"),
-    gr.inputs.Dropdown(["Yes", "No"], label="PaperlessBilling"),
-    gr.inputs.Radio(["Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"], label="PaymentMethod"),
-    gr.inputs.Number(default=0,  label="tenure"),
-    gr.inputs.Number(default=0,  label="MonthlyCharges"),
-    gr.inputs.Number(default=0,  label="TotalCharges")
- 
-]
+# Company image
+st.image("https://upload.wikimedia.org/wikipedia/commons/0/0f/Corporaci%C3%B3n_Favorita_Logo.png?20161217003545")
 
-# Define the output component and its label
-output = gr.outputs.Label(label="Churn Prediction") 
+st.write("""# Corporation Favorita Grocery """)
+
+# Write a subheader
+st.subheader("Enter your records")
 
 # Load ml components from file
 cwd = os.getcwd()
-relative_path = "gradio_project\\pipeline.pkl"
+relative_path = "streamlit_project\\ml.pkl"
 
 absolute_path = os.path.join(cwd, relative_path)
 print(absolute_path)
-print(inputs)
 
 # Reading Machine learning component file
 with open(absolute_path, "rb") as f:
     ml_components = pickle.load(f)
 
-print(ml_components)
+pip = ml_components["pipline"]
+scaler = pip["scaler"]
+model = pip["regressor"]
       
-# Define a conversion prediction function
-def convert_to_df(gender, SeniorCitizen, Partner , Dependents , 
-                PhoneService , MultipleLines , InternetService , OnlineSecurity , 
-                OnlineBackup, DeviceProtection , TechSupport , StreamingTV, 
-                StreamingMovies , Contract , PaperlessBilling , PaymentMethod ,  
-                tenure , MonthlyCharges , TotalCharges):
-    
-    # Create a list of lists from the input arguments
-    data = [[gender, SeniorCitizen, Partner , Dependents , 
-                PhoneService , MultipleLines , InternetService , OnlineSecurity , 
-                OnlineBackup, DeviceProtection , TechSupport , StreamingTV, 
-                StreamingMovies , Contract , PaperlessBilling , PaymentMethod ,  
-                tenure , MonthlyCharges , TotalCharges]]
-    
-    # Create a dataframe from the data  
-    df = pd.DataFrame(data, columns=["gender", "SeniorCitizen", "Partner" , "Dependents" , 
-                "PhoneService" , "MultipleLines" , "InternetService" , "OnlineSecurity" , 
-                "OnlineBackup", "DeviceProtection" , "TechSupport" , "StreamingTV", 
-                "StreamingMovies" , "Contract" , "PaperlessBilling" , "PaymentMethod" ,  
-                "tenure" , "MonthlyCharges" , "TotalCharges"])
-    
-    print("check")
-    print(df)
-    print("predict") 
-     
-    pipeline = ml_components["pipline"]
-    predicted = pipeline.predict(df)
+# Preparing records to be choosen for family
+family_choose = ["AUTOMOTIVE", "BABY CARE" , "BEAUTY" , "BEVERAGES" , "BOOKS" , "BREAD/BAKERY ", 
+                 "CELEBRATION" , "CLEANING" , "DAIRY", "DELI" , "EGGS" , "FROZEN FOODS" , "GROCERY I" ,
+                 "GROCERY II" , "HARDWARE"  , "HOME AND KITCHEN I" , "HOME AND KITCHEN II ",
+                 "HOME APPLIANCES" , "HOME CARE" , "LADIESWEAR" , "LAWN AND GARDEN" , "LINGERIE" ,
+                 "LIQUOR-WINE-BEER" , "MAGAZINES" ,"MEATS" , "PERSONAL CARE" , "PET SUPPLIES" ,
+                 "PLAYERS AND ELECTRONICS" , "POULTRY" , "PREPARED FOODS ", "PRODUCE" ,
+                 "SCHOOL AND OFFICE SUPPLIES ", "SEAFOOD" ]
 
-    # Convert the predicted class into a dictionary
-    classes = ["Yes", "No"]
-    output = {classes[classes.index(predicted[0])]: 1.0}
-    
-    # Return the dictionary
-    print(output)
-    return output
+# Accepting input
+store_nbr = st.slider("Select an Store number", min_value=1, max_value=54, value=10, step=1)
+family = st.selectbox("family", family_choose , key = "fam" )
 
-# Create and launch the interface
-iface = gr.Interface(
-    fn=convert_to_df,
-    title = title,
-    description=description, 
-    inputs=inputs, 
-    outputs="label",
-    theme=gr.themes.GoogleFont(name="Roboto")
-    )
-iface.launch(share = "True")    
+onpromotion = st.number_input("onpromotion" , key = "pro" )
+date = st.date_input("Select date", )
+
+
+backgroundColor = "green"
+with st.form(key = "my_form", clear_on_submit=True):
+            
+    # For presenting output
+    submitted = st.form_submit_button("Predict")
+    if submitted:
+                
+        try:
+            
+            inputs = [
+                        ["store_nbr" , "family", "onpromotion", "date"], 
+                    
+                        [ store_nbr , family, onpromotion, date ], 
+                        
+                    ]
+            
+            df = pd.DataFrame(inputs[1:], columns=inputs[0])
+            
+            df = df.set_index("date") # make the date as index 
+                   
+            df = df[["store_nbr" , "onpromotion"]] # secting exogenous variables
+            print(df)
+            
+            # Predicting values
+            predicted = pip.predict(df)
+            df["sales"] = predicted
+
+            st.balloons()
+            st.success('Successfully predicted!', icon="✅")
+            print(df) 
+            
+            st.write(predicted)
+            st.write(df)
+            
+        except:
+            st.error('Something wrong happen....', icon="🚨")
+        
