@@ -50,3 +50,20 @@ Go to your browser at the following address for gradio:
 
   http://127.0.0.1:7860; # or
   http://127.0.0.1:7861
+# Screenshots
+Streamlit Basic Demo
+
+Gradio Basic Demo
+
+# Resources
+Here are some ressources you would read to have a good understanding of Gradio and Streamlit :
+
+Get started with Streamlit
+
+Get started with Gradio
+
+# Contributing
+[LAWRENCE LARWEH](https://www.linkedin.com/in/lawrencelarweh/?originalSubdomain=gh)
+
+# Author
+[HENOK SOLOMON](https://github.com/Henamen21/model_app/blob/master/www.linkedin.com/in/henok-solomon-a3b537206)https://github.com/Henamen21/model_app/blob/master/www.linkedin.com/in/henok-solomon-a3b537206
