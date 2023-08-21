@@ -52,8 +52,10 @@ Go to your browser at the following address for gradio:
   http://127.0.0.1:7861
 # Screenshots
 Streamlit Basic Demo
+<img width="382" alt="streamlit" src="https://github.com/llarweh/LP4_MODEL_APP/assets/131138224/b214827e-4ebe-4c0a-8646-465dd59a0c0e">
 
 Gradio Basic Demo
+<img width="947" alt="gradio" src="https://github.com/llarweh/LP4_MODEL_APP/assets/131138224/3ddc7b66-39e4-47d0-a3d1-b3bd902b7248">
 
 # Resources
 Here are some ressources you would read to have a good understanding of Gradio and Streamlit :
